@@ -138,7 +138,7 @@ module ActionController
     #   class PostsController < ApplicationController
     #     REALM = "SuperSecret"
     #     USERS = {"dhh" => "secret", #plain text password
-    #              "dap" => Digest::MD5.hexdigest(["dap",REALM,"secret"].join(":"))}  #ha1 digest password
+    #              "dap" => ActiveSupport::Digest.hexdigest(["dap",REALM,"secret"].join(":"))}  #ha1 digest password
     #
     #     before_action :authenticate, except: [:index]
     #
@@ -226,12 +226,12 @@ module ActionController
       # of a plain-text password.
       def expected_response(http_method, uri, credentials, password, password_is_ha1=true)
         ha1 = password_is_ha1 ? password : ha1(credentials, password)
-        ha2 = ::Digest::MD5.hexdigest([http_method.to_s.upcase, uri].join(':'))
-        ::Digest::MD5.hexdigest([ha1, credentials[:nonce], credentials[:nc], credentials[:cnonce], credentials[:qop], ha2].join(':'))
+        ha2 = ::ActiveSupport::Digest.hexdigest([http_method.to_s.upcase, uri].join(':'))
+        ::ActiveSupport::Digest.hexdigest([ha1, credentials[:nonce], credentials[:nc], credentials[:cnonce], credentials[:qop], ha2].join(':'))
       end
 
       def ha1(credentials, password)
-        ::Digest::MD5.hexdigest([credentials[:username], credentials[:realm], password].join(':'))
+        ::ActiveSupport::Digest.hexdigest([credentials[:username], credentials[:realm], password].join(':'))
       end
 
       def encode_credentials(http_method, credentials, password, password_is_ha1)
@@ -305,7 +305,7 @@ module ActionController
       def nonce(secret_key, time = Time.now)
         t = time.to_i
         hashed = [t, secret_key]
-        digest = ::Digest::MD5.hexdigest(hashed.join(":"))
+        digest = ::ActiveSupport::Digest.hexdigest(hashed.join(":"))
         ::Base64.strict_encode64("#{t}:#{digest}")
       end
 
@@ -322,7 +322,7 @@ module ActionController
 
       # Opaque based on digest of secret key
       def opaque(secret_key)
-        ::Digest::MD5.hexdigest(secret_key)
+        ::ActiveSupport::Digest.hexdigest(secret_key)
       end
 
     end

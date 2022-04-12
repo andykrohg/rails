@@ -22,7 +22,7 @@ module ActiveRecord
 
       /\Adevelopers\/query-(\h+)-(\d+)-(\d+)\Z/ =~ developers.cache_key
 
-      assert_equal Digest::MD5.hexdigest(developers.to_sql), $1
+      assert_equal ActiveSupport::Digest.hexdigest(developers.to_sql), $1
       assert_equal developers.count.to_s, $2
       assert_equal last_developer_timestamp.to_s(ActiveRecord::Base.cache_timestamp_format), $3
     end
@@ -35,7 +35,7 @@ module ActiveRecord
 
       /\Adevelopers\/query-(\h+)-(\d+)-(\d+)\Z/ =~ developers.cache_key
 
-      assert_equal Digest::MD5.hexdigest(developers.to_sql), $1
+      assert_equal ActiveSupport::Digest.hexdigest(developers.to_sql), $1
       assert_equal developers.count.to_s, $2
       assert_equal last_developer_timestamp.to_s(ActiveRecord::Base.cache_timestamp_format), $3
     end
@@ -48,7 +48,7 @@ module ActiveRecord
 
       /\Adevelopers\/query-(\h+)-(\d+)-(\d+)\Z/ =~ developers.cache_key
 
-      assert_equal Digest::MD5.hexdigest(developers.to_sql), $1
+      assert_equal ActiveSupport::Digest.hexdigest(developers.to_sql), $1
       assert_equal developers.count.to_s, $2
       assert_equal last_developer_timestamp.to_s(ActiveRecord::Base.cache_timestamp_format), $3
     end
