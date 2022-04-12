@@ -120,7 +120,7 @@ module ActiveSupport
           fname = URI.encode_www_form_component(key)
 
           if fname.size > FILEPATH_MAX_SIZE
-            fname = Digest::MD5.hexdigest(key)
+            fname = ActiveSupport::Digest.hexdigest(key)
           end
 
           hash = Zlib.adler32(fname)
